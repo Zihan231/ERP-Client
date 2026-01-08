@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 
 // Importing icons from 'react-icons/pi'
@@ -10,11 +10,9 @@ import {
     PiEnvelopeSimpleFill,   // Send Mail
 } from "react-icons/pi";
 import LogOutBtn from "../LogOutBtn/LogOutBtn";
+import AuthContext from "@/context/AuthContext";
 
 const Sidebar = () => {
-
-
-
     const menuItems = [
         { name: "Overview", icon: <PiSquaresFourFill className="w-5 h-5" />, path: "/dashboard" },
         { name: "User Management", icon: <PiUsersThreeFill className="w-5 h-5" />, path: "/dashboard/users" },
@@ -49,24 +47,7 @@ const Sidebar = () => {
                     </Link>
                 ))}
             </nav>
-
-            {/* User & Logout */}
-            <div className="p-4 border-t border-base-200 bg-base-50/50">
-                <div className="flex items-center gap-3 mb-4 px-2">
-                    <div className="avatar placeholder">
-                        <div className="bg-red-100 text-red-600 rounded-full w-10 flex items-center justify-center">
-                            <span className="text-sm font-bold">SU</span>
-                        </div>
-                    </div>
-                    <div className="overflow-hidden">
-                        <p className="text-sm font-bold text-base-content">Super User</p>
-                        <p className="text-xs text-base-content/50 truncate">root@nexus.com</p>
-                    </div>
-                </div>
-
-                <LogOutBtn></LogOutBtn>
-
-            </div>
+            <LogOutBtn></LogOutBtn>
         </aside>
     );
 };

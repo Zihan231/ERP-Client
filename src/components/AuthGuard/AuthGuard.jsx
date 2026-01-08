@@ -8,7 +8,7 @@ const AuthGuard = ({ children }) => {
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser, isLoading, setIsLoading} = useContext(AuthContext);
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -30,10 +30,11 @@ const AuthGuard = ({ children }) => {
             );
             if (userdata.data) {
                 setUser(userdata.data);
+                setIsLoading(false);
             }
         }
         fetchData();
-    }, []);
+    }, [setUser, setIsLoading]);
     console.log(user);
 
     if (loading) {

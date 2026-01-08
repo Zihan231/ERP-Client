@@ -53,7 +53,7 @@ const AllEmployees = ({ employees }) => {
                             {employees && employees.map((employee) => (
                                 <tr key={employee.id} className="hover:bg-base-200/30 border-b border-base-100 last:border-none transition-colors">
                                     
-                                    {/* Name & Avatar */}
+                                    
                                     <td className="py-4 pl-6">
                                         <div className="flex items-center gap-4">
                                             <div className="avatar">
@@ -71,26 +71,22 @@ const AllEmployees = ({ employees }) => {
                                             </div>
                                         </div>
                                     </td>
-                                    
-                                    {/* Role */}
+                                
                                     <td className="text-sm">
                                         <div className="text-base-content/80">{employee.role}</div>
                                         <div className="text-xs text-base-content/40 mt-0.5">{employee.department}</div>
                                     </td>
                                     
-                                    {/* Status - Using small outline badges */}
                                     <td>
                                         <div className={`badge ${getStatusBadge(employee.status)} py-2 px-3 h-auto font-medium`}>
                                             {employee.status}
                                         </div>
                                     </td>
 
-                                    {/* Location */}
                                     <td className="text-sm text-base-content/60">
                                         {employee.location}
                                     </td>
                                     
-                                    {/* Actions */}
                                     <td className="pr-6 text-right">
                                         <Link href={`/dashboard/${employee.id}`} className="btn btn-ghost btn-xs text-blue-600 hover:text-base-content">
                                             See Details

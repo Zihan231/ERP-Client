@@ -175,37 +175,6 @@ const EmployeeDetails = async ({ params }) => {
                         </section>
                     </div>
 
-                    {/* Right Column: Employment Details */}
-                    <div className="md:col-span-1">
-                        <div className="bg-base-50 p-6 rounded-lg border border-base-200 space-y-6">
-                            <div>
-                                <label className="text-xs text-base-content/50 block mb-1">Employment Type</label>
-                                <div className="text-sm font-medium">{employee.type}</div>
-                            </div>
-                            <div>
-                                <label className="text-xs text-base-content/50 block mb-1">Date Joined</label>
-                                <div className="text-sm font-medium">{employee.joiningDate}</div>
-                            </div>
-                            <div>
-                                <label className="text-xs text-base-content/50 block mb-1">Reporting To</label>
-                                <div className="flex items-center gap-3 mt-2">
-                                    <div className="avatar placeholder">
-                                        <div className="bg-neutral text-neutral-content rounded-full w-8">
-                                            <span className="text-xs">MC</span>
-                                        </div>
-                                    </div>
-                                    <div className="text-sm font-medium">{employee.manager}</div>
-                                </div>
-                            </div>
-
-                            <div className="divider my-4"></div>
-
-                            <button className="btn btn-error btn-outline btn-sm w-full font-normal">
-                                Deactivate Account
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

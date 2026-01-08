@@ -5,48 +5,51 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 
 const AuthGuard = ({ children }) => {
-
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-    const { user, setUser, isLoading, setIsLoading} = useContext(AuthContext);
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            router.push("/login")
-        } else {
-            setLoading(false);
-        }
-    }, [router]);
+    const { setUser } = useContext(AuthContext);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        const fetchData = async () => {
-            const userdata = await axios.get("http://localhost:3000/admin/profile",
-                {
+        const checkAuth = async () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                router.replace("/login"); // Use replace prevents back-button issues
+                return;
+            }
+
+            try {
+                const response = await axios.get("http://localhost:3000/admin/profile", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
+                });
+
+                if (response.data) {
+                    setUser(response.data);
                 }
-            );
-            if (userdata.data) {
-                setUser(userdata.data);
-                setIsLoading(false);
+            } catch (error) {
+                console.error("Auth verification failed:", error);
+                localStorage.removeItem("token");
+                router.replace("/login");
+            } finally {
+                // Whether success or failure, stop loading
+                setLoading(false);
             }
-        }
-        fetchData();
-    }, [setUser, setIsLoading]);
-    console.log(user);
+        };
+
+        checkAuth();
+    }, [router, setUser]);
 
     if (loading) {
-        <div className="flex items-center justify-center h-screen bg-blue-50/30">
-            <span className="loading loading-spinner loading-lg text-blue-600"></span>
-        </div>
+        return (
+            <div className="flex items-center justify-center h-screen bg-blue-50/30">
+                <span className="loading loading-spinner loading-lg text-blue-600"></span>
+            </div>
+        );
     }
-    return (
-        <>
-            {children}
-        </>
-    );
+
+    return <>{children}</>;
 };
 
 export default AuthGuard;

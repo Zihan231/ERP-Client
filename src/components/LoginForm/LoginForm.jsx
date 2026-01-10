@@ -37,7 +37,7 @@ const LoginForm = () => {
             <form onSubmit={handleLogin} className="space-y-5">
                 <div className="form-control">
                     <label className="label">
-                        <span className="label-text font-semibold text-base-content/70">
+                        <span className="label-text text-[#0f172a] font-semibold">
                             Email
                         </span>
                     </label>
@@ -45,13 +45,13 @@ const LoginForm = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         type="email"
                         placeholder="name@company.com"
-                        className="input input-bordered w-full bg-blue-50/30 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                        className="input input-bordered w-full bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:border-[#0094F7] focus:ring-[#0094F7]"
                     />
                 </div>
 
                 <div className="form-control">
                     <label className="label">
-                        <span className="label-text font-semibold text-base-content/70">
+                        <span className="label-text text-[#0f172a] font-semibold">
                             Password
                         </span>
                     </label>
@@ -59,7 +59,7 @@ const LoginForm = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         placeholder="••••••••"
-                        className="input input-bordered w-full bg-blue-50/30 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 transition-all duration-200"
+                        className="input input-bordered w-full bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:border-[#0094F7] focus:ring-[#0094F7]"
                     />
                     <label className="label mt-1">
                         <a href="#" className="label-text-alt link link-hover text-blue-600 font-medium">
@@ -73,16 +73,13 @@ const LoginForm = () => {
 
                 <div className="form-control mt-8">
                     {/*  submit button */}
-                    <button
-                        type="submit"
-                        className="btn bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-none text-lg shadow-lg shadow-blue-500/30 w-full"
-                    >
+                    <button className="btn w-full bg-[#0094F7] hover:bg-blue-600 text-white border-none font-bold">
                         Login
                     </button>
                 </div>
             </form>
 
-            
+
         </div>
     );
 };

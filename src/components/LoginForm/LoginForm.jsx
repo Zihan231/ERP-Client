@@ -27,7 +27,9 @@ const LoginForm = () => {
             }
 
             localStorage.setItem("token", token);
+            document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Strict`;
             router.push("/dashboard");
+            router.refresh();
         } catch (err) {
             setError(err.response?.data?.message || err.message || "Login failed.");
         }

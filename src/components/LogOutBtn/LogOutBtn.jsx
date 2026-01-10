@@ -9,7 +9,7 @@ import AuthContext from '@/context/AuthContext';
 
 const LogOutBtn = () => {
     const { user } = useContext(AuthContext);
-    console.log("Logged in user:", user);
+    // console.log("Logged in user:", user);
     const router = useRouter();
     const handleLogOut = () => {
         localStorage.removeItem("token");

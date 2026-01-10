@@ -3,6 +3,7 @@ import AuthContext from '@/context/AuthContext';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
+import { HashLoader } from 'react-spinners';
 
 const AuthGuard = ({ children }) => {
     const router = useRouter();
@@ -37,7 +38,6 @@ const AuthGuard = ({ children }) => {
                 setLoading(false);
             }
         };
-
         checkAuth();
     }, [router, setUser]);
 
@@ -49,7 +49,9 @@ const AuthGuard = ({ children }) => {
         );
     }
 
-    return <>{children}</>;
+    return <>
+        {children}
+    </>;
 };
 
 export default AuthGuard;

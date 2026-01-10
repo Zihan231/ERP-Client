@@ -7,11 +7,6 @@ const Login = () => {
     // Changed background to white to match Home page
     <div className="min-h-screen flex items-center justify-center p-4 bg-white font-sans">
       
-      {/* Card Container */}
-      {/* - bg-white: Clean card background
-          - shadow-2xl: Soft, modern shadow
-          - border-t-4 border-[#0094F7]: Matches the Brand Logo color
-      */}
       <div className="card bg-white w-full max-w-md shadow-2xl shadow-blue-900/10 border-t-4 border-[#0094F7]">
         <div className="card-body p-8">
           

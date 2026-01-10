@@ -51,19 +51,14 @@ const NavBar = () => {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
+          
             <Link href="/login">
-              <button className="btn btn-ghost text-white hover:bg-white/10">
-                Login
-              </button>
-            </Link>
-
-            <Link href="/register">
               {/* Used standard style for exact color matching if 'btn-primary' isn't set to this color in theme */}
               <button
                 className="btn text-white border-none hover:brightness-110"
                 style={{ backgroundColor: '#0094F7' }}
               >
-                Register
+                Login
               </button>
             </Link>
           </div>

@@ -1,4 +1,5 @@
 "use client"
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { 
     PiPlus, 
@@ -79,10 +80,10 @@ const UserManagement = () => {
                     <h2 className="text-2xl font-bold text-base-content">User Directory</h2>
                     <p className="text-base-content/60">Manage system access and roles.</p>
                 </div>
-                <button className="btn bg-blue-600 hover:bg-blue-700 text-white border-none shadow-lg shadow-blue-500/30 gap-2">
+                <Link href="/dashboard/create-user" className="btn bg-blue-600 hover:bg-blue-700 text-white border-none shadow-lg shadow-blue-500/30 gap-2">
                     <PiPlus className="w-5 h-5" />
                     Create User
-                </button>
+                </Link>
             </div>
 
             {/* Table */}

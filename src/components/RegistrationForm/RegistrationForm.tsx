@@ -45,10 +45,7 @@ const RegistrationForm = () => {
         }
     };
 
-    // --- Styling Classes ---
-    // Inputs: White background, Gray borders, Brand Blue focus ring
     const inputClass = "input input-bordered w-full bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#0094F7] focus:ring-1 focus:ring-[#0094F7] transition-all duration-200";
-    // Labels: Dark Slate Text
     const labelClass = "label-text font-semibold text-[#0f172a]";
 
     return (

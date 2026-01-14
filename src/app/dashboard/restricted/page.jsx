@@ -7,6 +7,7 @@ import {
     PiLockKeyOpenBold,
     PiUserCircleFill
 } from 'react-icons/pi';
+import Swal from 'sweetalert2';
 
 const RestrictedUsers = () => {
     const [restrictedUsers, setRestrictedUsers] = useState([]);
@@ -19,10 +20,10 @@ const RestrictedUsers = () => {
                         Authorization: `Bearer ${token}`,
                     }
                 })
-                if (res.data) {
+                if (Array.isArray(res.data)) {
                     setRestrictedUsers(res.data);
                 } else {
-                    console.log("No data found");
+                    setRestrictedUsers([]);
                 }
             };
             fetchData();
@@ -30,7 +31,7 @@ const RestrictedUsers = () => {
             console.log("Error")
         }
     }, [token]);
-    
+
     const getRoleBadge = (role) => {
         switch (role) {
             case 'admin': return 'badge-secondary badge-outline';
@@ -38,7 +39,46 @@ const RestrictedUsers = () => {
             default: return 'badge-ghost badge-outline';
         }
     };
+    const handleUnLock = async (userId) => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to unlock this account?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981', 
+            cancelButtonColor: '#ef4444',
+            confirmButtonText: 'Yes, unlock it!'
+        });
 
+        if (result.isConfirmed) {
+            try {
+                const res = await axios.post(`http://localhost:3000/admin/setLock/${userId}`,
+                    { data: false },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (res.status === 201 || res.status === 200) {
+                    Swal.fire(
+                        'Unlocked!',
+                        'The user account has been restored.',
+                        'success'
+                    );
+                    setRestrictedUsers(prev => prev.filter(user => user.id !== userId));
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire(
+                    'Error!',
+                    'Something went wrong while unlocking.',
+                    'error'
+                );
+            }
+        }
+    };
     return (
         <div>
             {/* --- Page Header --- */}
@@ -70,7 +110,7 @@ const RestrictedUsers = () => {
 
                         {/* Body */}
                         <tbody>
-                            {restrictedUsers.map((user) => (
+                            {restrictedUsers?.map((user) => (
                                 <tr key={user.id} className="hover:bg-base-50 transition-colors border-b border-base-100 last:border-none">
 
                                     {/* Column 1: User Info */}
@@ -105,7 +145,7 @@ const RestrictedUsers = () => {
 
                                     {/* Column 4: Action Button */}
                                     <td className="pr-6 py-4 text-right">
-                                        <button className="btn btn-sm btn-outline border-base-300 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200 gap-2 font-normal transition-all">
+                                        <button onClick={() => handleUnLock(user?.id)} className="btn btn-sm btn-outline border-base-300 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200 gap-2 font-normal transition-all">
                                             <PiLockKeyOpenBold />
                                             Unlock Account
                                         </button>
@@ -116,7 +156,7 @@ const RestrictedUsers = () => {
                     </table>
 
                     {/* Empty State Handling */}
-                    {restrictedUsers.length === 0 && (
+                    {restrictedUsers?.length === 0 && (
                         <div className="text-center py-12 text-base-content/40">
                             <PiShieldWarningFill className="w-12 h-12 mx-auto mb-2 opacity-20" />
                             <p>No restricted users found.</p>

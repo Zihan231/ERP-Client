@@ -1,7 +1,10 @@
+"use client";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const notfound = () => {
+    const router = useRouter();
     return (
         <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 font-sans text-center">
 
@@ -20,7 +23,6 @@ const notfound = () => {
                 Oops! The page you are looking for doesn&apos;t exist or has been moved.
                 Let&apos;s get you back to business.
             </p>
-
             {/* --- Action Buttons --- */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/">
@@ -29,11 +31,9 @@ const notfound = () => {
                     </button>
                 </Link>
 
-                <Link href="/contact">
-                    <button className="btn bg-transparent hover:bg-gray-50 text-[#0f172a] border border-gray-300 px-8 text-lg w-full sm:w-auto">
-                        Contact Support
-                    </button>
-                </Link>
+                <button onClick={() => { router.back() }} className="btn bg-transparent hover:bg-gray-50 text-[#0f172a] border border-gray-300 px-8 text-lg w-full sm:w-auto">
+                    Back
+                </button>
             </div>
 
         </div>

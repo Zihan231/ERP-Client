@@ -34,44 +34,7 @@ const ActivityLogPage = async () => {
   } catch {
     console.log("error");
   }
-  const demoLogs = [
-    {
-      id: 66,
-      oppositeUserID: 88,
-      oppositeUserName: "Mohammed Yunus",
-      action: "Role changed to admin",
-      executionDate: "2026-01-14T16:44:01.630Z",
-    },
-    {
-      id: 67,
-      oppositeUserID: 102,
-      oppositeUserName: "Sarah Khan",
-      action: "Account created",
-      executionDate: "2026-01-14T15:30:00.000Z",
-    },
-    {
-      id: 68,
-      oppositeUserID: 45,
-      oppositeUserName: "John Doe",
-      action: "Password reset",
-      executionDate: "2026-01-13T09:15:22.000Z",
-    },
-    {
-      id: 69,
-      oppositeUserID: 12,
-      oppositeUserName: "System Bot",
-      action: "Deleted invalid user",
-      executionDate: "2026-01-12T11:20:10.000Z",
-    },
-    {
-      id: 70,
-      oppositeUserID: 99,
-      oppositeUserName: "Ayesha Siddiqa",
-      action: "Updated profile picture",
-      executionDate: "2026-01-12T08:45:00.000Z",
-    },
-  ];
-
+  
   // Helper to format date
   const formatDate = (isoString) => {
     return new Date(isoString).toLocaleString("en-US", {

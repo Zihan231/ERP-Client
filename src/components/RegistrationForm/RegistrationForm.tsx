@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 const RegistrationForm = () => {
     const router = useRouter();
@@ -29,19 +30,35 @@ const RegistrationForm = () => {
             }, {
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
             });
 
             console.log("RES:", res.data);
 
             if (res.data?.success || res.status === 201) {
-                router.push("/login");
+                Swal.fire({
+                title: "Success!",
+                text: "User created successfully!",
+                icon: "success",
+                confirmButtonColor: "#0094F7",
+                confirmButtonText: "Okay"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                   router.push("users")
+                }
+            });
             } else {
                 setError(res.data?.message || "User creation failed.");
             }
         } catch (err) {
             console.log("ERR:", err?.response?.data || err);
             setError(err.response?.data?.message || err.message || "Something went wrong.");
+            Swal.fire({
+            title: "Error!",
+            text: err.response?.data?.message || "Something went wrong.",
+            icon: "error"
+        });
         }
     };
 

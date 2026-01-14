@@ -5,7 +5,7 @@ import AuthContext from './AuthContext';
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
+    
     const userInfo = {
         user,
         setUser,

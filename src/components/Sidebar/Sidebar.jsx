@@ -1,24 +1,23 @@
 import React, { useContext } from "react";
 import Link from "next/link";
-
-// Importing icons from 'react-icons/pi'
 import {
-    PiSquaresFourFill,      // Overview
-    PiUsersThreeFill,       // User Management (All users, Create, Delete, Roles)
-    PiShieldWarningFill,    // Security (Settings, Lock/Unlock, Locked Accounts)
-    PiScrollFill,           // Activity Log
-    PiEnvelopeSimpleFill,   // Send Mail
+    PiSquaresFourFill,
+    PiUsersThreeFill,
+    PiShieldWarningFill,
+    PiScrollFill,
+    PiEnvelopeSimpleFill,
+    PiUserCircleFill,
+    PiUserMinusFill,
 } from "react-icons/pi";
 import LogOutBtn from "../LogOutBtn/LogOutBtn";
-import AuthContext from "@/context/AuthContext";
-
 const Sidebar = () => {
     const menuItems = [
         { name: "Overview", icon: <PiSquaresFourFill className="w-5 h-5" />, path: "/dashboard" },
         { name: "User Management", icon: <PiUsersThreeFill className="w-5 h-5" />, path: "/dashboard/users" },
-        { name: "Security Control", icon: <PiShieldWarningFill className="w-5 h-5" />, path: "/dashboard/security" },
+        { name: "Restricted Users", icon: <PiUserMinusFill className="w-5 h-5" />, path: "/dashboard/restricted" },
         { name: "Activity Logs", icon: <PiScrollFill className="w-5 h-5" />, path: "/dashboard/logs" },
         { name: "Communication", icon: <PiEnvelopeSimpleFill className="w-5 h-5" />, path: "/dashboard/email" },
+        { name: "User Profile", icon: <PiUserCircleFill className="w-5 h-5" />, path: "/dashboard/profile" },
     ];
 
     return (

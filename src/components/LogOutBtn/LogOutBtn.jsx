@@ -2,14 +2,13 @@
 import React, { useContext } from 'react';
 import Link from "next/link";
 import {
-    PiSignOutBold           // Logout
+    PiSignOutBold           
 } from "react-icons/pi";
 import { useRouter } from 'next/navigation';
 import AuthContext from '@/context/AuthContext';
 
 const LogOutBtn = () => {
     const { user } = useContext(AuthContext);
-    // console.log("Logged in user:", user);
     const router = useRouter();
     const handleLogOut = () => {
         localStorage.removeItem("token");

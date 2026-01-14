@@ -25,7 +25,6 @@ const LoginForm = () => {
                 setError(res.data?.message || "Login failed (no token).");
                 return;
             }
-
             localStorage.setItem("token", token);
             document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Strict`;
             router.push("/dashboard");

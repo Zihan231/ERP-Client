@@ -23,7 +23,6 @@ const fetchData = async (): Promise<UserList[]> => {
       "http://localhost:3000/admin/allUsers",
       {
         headers: {
-          // Using your hardcoded token as requested
           Authorization: `Bearer ${token}`,
         },
       }

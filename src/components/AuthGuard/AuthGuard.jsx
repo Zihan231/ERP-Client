@@ -15,7 +15,7 @@ const AuthGuard = ({ children }) => {
             const token = localStorage.getItem("token");
 
             if (!token) {
-                router.replace("/login"); // Use replace prevents back-button issues
+                router.replace("/login");
                 return;
             }
 
@@ -31,10 +31,7 @@ const AuthGuard = ({ children }) => {
                 }
             } catch (error) {
                 console.error("Auth verification failed:", error);
-                localStorage.removeItem("token");
-                router.replace("/login");
             } finally {
-                // Whether success or failure, stop loading
                 setLoading(false);
             }
         };

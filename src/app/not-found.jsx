@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -39,5 +40,4 @@ const notfound = () => {
         </div>
     );
 };
-
 export default notfound;

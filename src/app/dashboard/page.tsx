@@ -22,6 +22,8 @@ const fetchData = async (): Promise<logs[]> => {
     });
     if (res.data) {
       return res.data;
+    } else {
+      return [];
     }
   } catch {
     console.log("Error");
@@ -31,7 +33,7 @@ const Dashboard = async () => {
     let data: logs[] = [];
   try {
     data = await fetchData();
-    console.log(data);
+    // console.log(data);
   } catch {
     console.log("error");
   }
@@ -105,7 +107,7 @@ const Dashboard = async () => {
                 
                             {/* Body */}
                             <tbody>
-                              {data.map((log) => (
+                              {data?.map((log) => (
                                 <tr
                                   key={log.id}
                                   className="hover:bg-base-50 transition-colors border-b border-base-100 last:border-none"

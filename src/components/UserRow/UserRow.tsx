@@ -11,6 +11,7 @@ import {
   PiUserCircleFill,
   PiCaretDownBold,
   PiSpinnerGap,
+  PiPaperPlaneTiltFill, // <--- New Icon
 } from "react-icons/pi";
 
 const getRoleStyle = (role: string | null) => {
@@ -32,10 +33,72 @@ const UserRow = ({ user }: { user: any }) => {
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSendingMail, setIsSendingMail] = useState(false); // <--- New State
+
+  // HANDLE SEND EMAIL
+  const handleSendEmail = async (e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    
+    // 1. Open SweetAlert Form
+    const { value: formValues } = await Swal.fire({
+      title: `Email to ${user.fullName}`,
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Subject" style="font-size: 16px;">
+        <textarea id="swal-input2" class="swal2-textarea" placeholder="Write your message here..." style="font-size: 16px;"></textarea>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Send Email',
+      confirmButtonColor: '#10B981', 
+      preConfirm: () => {
+        const subject = (document.getElementById('swal-input1') as HTMLInputElement).value;
+        const text = (document.getElementById('swal-input2') as HTMLTextAreaElement).value;
+        
+        if (!subject || !text) {
+          Swal.showValidationMessage('Please enter both subject and message');
+        }
+        return { subject, text };
+      }
+    });
+
+    // 2. If user cancelled, stop
+    if (!formValues) return;
+
+    setIsSendingMail(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      
+      // 3. Send API Request
+      await axios.post(
+        `http://localhost:3000/admin/send/mail/${user.id}`,
+        formValues,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // 4. Success Alert
+      Swal.fire({
+        icon: 'success',
+        title: 'Email Sent!',
+        text: `Message successfully sent to ${user.email}`,
+        timer: 2000,
+        showConfirmButton: false
+      });
+
+    } catch (error: any) {
+      console.error("Email failed:", error);
+      Swal.fire(
+        "Failed",
+        error.response?.data?.message || "Could not send email.",
+        "error"
+      );
+    } finally {
+      setIsSendingMail(false);
+    }
+  };
 
   // HANDLE ROLE UPDATE
   const handleRoleChange = async (newRole: string) => {
-    // 1. Confirm First
     const result = await Swal.fire({
       title: "Change User Role?",
       text: `Are you sure you want to change ${user.fullName}'s role to "${newRole}"?`,
@@ -55,18 +118,12 @@ const UserRow = ({ user }: { user: any }) => {
 
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        Swal.fire("Error", "No authentication token found.", "error");
-        return;
-      }
-
       await axios.put(
         `http://localhost:3000/admin/updateRole/${user.id}?newRole=${newRole}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Success Alert
       Swal.fire({
         title: "Updated!",
         text: "User role has been updated successfully.",
@@ -77,7 +134,6 @@ const UserRow = ({ user }: { user: any }) => {
 
       router.refresh();
     } catch (error: any) {
-      console.error("Update failed:", error);
       Swal.fire(
         "Error",
         error.response?.data?.message || "Failed to update role.",
@@ -89,8 +145,8 @@ const UserRow = ({ user }: { user: any }) => {
   };
 
   // HANDLE DELETE USER
-  const handleDeleteUser = async () => {
-    // 1. Confirm Delete
+  const handleDeleteUser = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Stop row click navigation
     const result = await Swal.fire({
       title: "Are you sure?",
       text: `You are about to delete ${user.fullName}. This cannot be undone!`,
@@ -107,16 +163,10 @@ const UserRow = ({ user }: { user: any }) => {
 
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        Swal.fire("Error", "No authentication token found.", "error");
-        return;
-      }
-
       await axios.delete(`http://localhost:3000/admin/delete/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Success Alert
       await Swal.fire({
         title: "Deleted!",
         text: "User has been removed from the system.",
@@ -127,7 +177,6 @@ const UserRow = ({ user }: { user: any }) => {
 
       router.refresh();
     } catch (error: any) {
-      console.error("Delete failed:", error);
       Swal.fire(
         "Error",
         error.response?.data?.message || "Failed to delete user.",
@@ -137,15 +186,17 @@ const UserRow = ({ user }: { user: any }) => {
       setIsDeleting(false);
     }
   };
-  const handleRowCLick = (userID) => {
+
+  const handleRowCLick = (userID: number) => {
     router.push(`/dashboard/users/${userID}`);
   };
 
   return (
     <tr
       onClick={() => handleRowCLick(user.id)}
-      className="hover:bg-blue-50/30 transition-colors duration-200 group"
+      className="hover:bg-blue-50/30 transition-colors duration-200 group cursor-pointer"
     >
+      {/* 1. Name & Github */}
       <td className="pl-6 py-4">
         <div>
           <div className="font-bold text-base-content text-base">
@@ -156,6 +207,7 @@ const UserRow = ({ user }: { user: any }) => {
             <a
               href={`${user.github}`}
               target="_blank"
+              onClick={(e) => e.stopPropagation()} // Stop row click
               className="flex items-center gap-1 text-xs text-blue-600 mt-1 hover:underline w-fit"
             >
               <PiGithubLogoFill /> {user.github}
@@ -168,8 +220,9 @@ const UserRow = ({ user }: { user: any }) => {
         </div>
       </td>
 
+      {/* 2. Role Selector */}
       <td className="w-40">
-        <div className="relative group/select">
+        <div className="relative group/select" onClick={(e) => e.stopPropagation()}>
           <select
             disabled={isUpdating || isDeleting}
             className={`
@@ -200,6 +253,7 @@ const UserRow = ({ user }: { user: any }) => {
         </div>
       </td>
 
+      {/* 3. Phone */}
       <td>
         <div className="flex items-center gap-2 text-sm text-base-content/70">
           <PiPhoneFill className="text-blue-400" />
@@ -209,6 +263,7 @@ const UserRow = ({ user }: { user: any }) => {
         </div>
       </td>
 
+      {/* 4. Address */}
       <td>
         <div className="flex items-center gap-2 text-sm text-base-content/70">
           <PiMapPinFill className="text-red-400" />
@@ -218,7 +273,24 @@ const UserRow = ({ user }: { user: any }) => {
         </div>
       </td>
 
-      {/* Actions (DELETE BUTTON) */}
+      {/* 5. NEW COLUMN: SEND EMAIL */}
+      <td>
+        <button
+          onClick={handleSendEmail}
+          disabled={isSendingMail || isDeleting}
+          className="btn btn-ghost btn-sm text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200 disabled:bg-transparent gap-2"
+          title="Send Email"
+        >
+           {isSendingMail ? (
+            <PiSpinnerGap className="w-5 h-5 animate-spin" />
+          ) : (
+            <PiPaperPlaneTiltFill className="w-5 h-5" />
+          )}
+          <span className="hidden xl:inline text-xs">Email</span>
+        </button>
+      </td>
+
+      {/* 6. Delete Button */}
       <td className="text-right pr-6">
         <button
           onClick={handleDeleteUser}
@@ -232,7 +304,7 @@ const UserRow = ({ user }: { user: any }) => {
             <PiTrash className="w-5 h-5" />
           )}
           <span className="hidden md:inline text-xs">
-            {isDeleting ? "Deleting..." : "Remove"}
+            {isDeleting ? "..." : "Remove"}
           </span>
         </button>
       </td>
